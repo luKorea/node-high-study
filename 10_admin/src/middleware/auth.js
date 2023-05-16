@@ -5,6 +5,10 @@ const { publicKey } = require("../config/secret");
 const verifyAuth = async (ctx, next) => {
   // 获取用户传递的 token
   const authorization = ctx.headers.authorization;
+  console.log(authorization, "authorization");
+  if (!authorization) {
+    return ctx.app.emit("error", UN_AUTHORIZATION, ctx);
+  }
   const token = authorization.replace("Bearer ", "");
   try {
     const result = jwt.verify(token, publicKey, {
