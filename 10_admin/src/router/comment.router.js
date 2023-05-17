@@ -3,6 +3,7 @@ const verifyAuth = require("../middleware/auth");
 
 const commentController = require("../controller/comment");
 const { verifyPermission } = require("../middleware/permission");
+const { verifyLabelExists } = require("../middleware/label");
 
 const commentRouter = new KoaRouter({
   prefix: "/comment",
@@ -27,6 +28,15 @@ commentRouter.post(
   "/getContentByUserId",
   verifyAuth,
   commentController.getContent
+);
+
+// 关联标签
+commentRouter.post(
+  "/:commentId/label",
+  verifyAuth,
+  verifyPermission,
+  verifyLabelExists,
+  commentController.addLabels
 );
 
 module.exports = commentRouter;

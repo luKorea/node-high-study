@@ -1,10 +1,12 @@
 const KoaRouter = require("@koa/router");
-const verifyAuth = require("../middleware/login");
+const verifyAuth = require("../middleware/auth");
 
-// TODO 面试完成后完成
+const momentController = require("../controller/moment");
+
 const momentRouter = new KoaRouter({
   prefix: "/moment",
 });
-momentRouter.post("/", verifyAuth);
+momentRouter.post("/", verifyAuth, momentController.create);
+momentRouter.post("/reply", verifyAuth, momentController.reply);
 
 module.exports = momentRouter;

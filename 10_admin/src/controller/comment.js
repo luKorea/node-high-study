@@ -64,6 +64,29 @@ class CommentController {
       data,
     };
   }
+
+  // 关联标签
+  async addLabels(ctx) {
+    const { labels } = ctx;
+    const { commentId } = ctx.params;
+    try {
+      for (const label of labels) {
+        const isExists = await commentService.hasLabel(commentId, label.id);
+        if (!isExists) {
+          await commentService.addLabels(commentId, label.id);
+        }
+      }
+      ctx.body = {
+        code: 200,
+        message: "关联标签成功",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 400,
+        message: "关联标签失败",
+      };
+    }
+  }
 }
 
 module.exports = new CommentController();
